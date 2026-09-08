@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desert Fox Radio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #16100a;
+    --bg-panel: #1e1610;
+    --bg-panel-2: #241a12;
+    --rust: #c1502e;
+    --rust-dark: #8c3a22;
+    --gold: #e8a93c;
+    --gold-dim: #b5822f;
+    --sand: #efe3c8;
+    --sand-dim: #cdbb94;
+    --ink: #201509;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--sand);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  h1,h2,h3, .display{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    letter-spacing:0.01em;
+    line-height:0.95;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- header ---------- */
+  header.site-header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(22,16,10,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid rgba(232,169,60,0.18);
+  }
+  .header-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+    max-width:1080px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand img{height:44px; width:auto;}
+  .brand-name{font-family:'Big Shoulders Display'; font-weight:700; font-size:20px; color:var(--sand);}
+  .brand-name span{color:var(--gold);}
+  nav.main-nav{display:flex; gap:30px;}
+  nav.main-nav a{
+    font-size:15px; font-weight:500; color:var(--sand-dim);
+    padding:6px 2px; border-bottom:2px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  nav.main-nav a:hover{color:var(--gold); border-color:var(--gold);}
+  .nav-toggle{display:none; background:none; border:none; color:var(--sand); font-size:26px; cursor:pointer;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:90px 28px 0;
+    text-align:center;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .sunburst{
+    position:absolute; top:-160px; left:50%; transform:translateX(-50%);
+    width:900px; height:900px; z-index:-2;
+    opacity:0.5;
+  }
+  .hero-badge{
+    width:230px; margin:0 auto 24px;
+  }
+  .hero .tagline{
+    font-size:17px; color:var(--sand-dim); max-width:480px; margin:0 auto 34px;
+    font-weight:500;
+  }
+  .hero-actions{
+    display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;
+    margin-bottom:60px;
+  }
+  .btn{
+    display:inline-block; padding:13px 26px; border-radius:8px;
+    font-weight:600; font-size:15px; transition: background .2s, color .2s, border-color .2s;
+  }
+  .btn-primary{background:var(--rust); color:var(--sand);}
+  .btn-primary:hover{background:var(--rust-dark);}
+  .btn-secondary{border:1px solid rgba(232,169,60,0.4); color:var(--gold);}
+  .btn-secondary:hover{background:rgba(232,169,60,0.1);}
+
+  .horizon{
+    display:block; width:100%; height:auto;
+  }
+
+  /* ---------- section shared ---------- */
+  section{padding:80px 28px;}
+  .section-head{max-width:560px; margin-bottom:44px;}
+  .section-head h2{font-size:38px; color:var(--sand); margin-bottom:12px;}
+  .section-head p{color:var(--sand-dim); font-size:16px;}
+
+  /* ---------- episodes ---------- */
+  .episodes{background:var(--bg-panel);}
+  .episode-list{
+    display:flex; flex-direction:column; gap:22px;
+  }
+  .episode-card{
+    background:var(--bg-panel-2); border:1px solid rgba(232,169,60,0.18);
+    border-radius:12px; padding:18px 20px;
+  }
+  .episode-card .episode-meta{
+    font-family:'Big Shoulders Display'; font-weight:700; font-size:19px;
+    color:var(--sand); margin-bottom:2px;
+  }
+  .episode-card .episode-date{
+    font-size:13px; color:var(--gold-dim); margin-bottom:14px;
+  }
+  .episode-card iframe{width:100%; border-radius:8px; display:block;}
+  .episodes-note{
+    margin-top:26px; font-size:13px; color:var(--sand-dim);
+    border-left:2px solid var(--gold); padding-left:14px;
+  }
+  .episodes-note a{color:var(--gold); font-weight:600; text-decoration:underline;}
+
+  /* ---------- about ---------- */
+  .about{
+    display:grid; grid-template-columns:220px 1fr; gap:48px; align-items:center;
+  }
+  .about img{border-radius:16px;}
+  .about h2{font-size:34px; color:var(--sand); margin-bottom:16px;}
+  .about p{color:var(--sand-dim); font-size:16px; margin-bottom:14px; max-width:520px;}
+  .about-stats{display:flex; gap:36px; margin-top:26px;}
+  .stat b{font-family:'Big Shoulders Display'; font-size:30px; color:var(--gold); display:block;}
+  .stat span{font-size:13px; color:var(--sand-dim);}
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--bg-panel-2);
+    padding:60px 28px 30px;
+    border-top:1px solid rgba(232,169,60,0.18);
+  }
+  .footer-top{
+    display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:30px;
+    max-width:1080px; margin:0 auto 40px;
+  }
+  .footer-brand{display:flex; align-items:center; gap:12px;}
+  .footer-brand img{height:38px;}
+  .footer-brand span{font-family:'Big Shoulders Display'; font-weight:700; font-size:18px; color:var(--sand);}
+  .social-links{display:flex; gap:22px; flex-wrap:wrap;}
+  .social-links a{font-size:14px; color:var(--sand-dim); font-weight:500;}
+  .social-links a:hover{color:var(--gold);}
+  .footer-bottom{
+    max-width:1080px; margin:0 auto; padding-top:22px;
+    border-top:1px solid rgba(239,227,200,0.1);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:12.5px; color:var(--sand-dim);
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 760px){
+    nav.main-nav{
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--bg-panel); flex-direction:column; gap:0;
+      max-height:0; overflow:hidden; transition:max-height .25s ease;
+      border-bottom:1px solid rgba(232,169,60,0.18);
+    }
+    nav.main-nav.open{max-height:200px;}
+    nav.main-nav a{padding:16px 28px; border-bottom:1px solid rgba(239,227,200,0.08);}
+    .nav-toggle{display:block;}
+    .about{grid-template-columns:1fr; text-align:center;}
+    .about img{margin:0 auto; width:160px;}
+    .about-stats{justify-content:center;}
+    .hero{padding-top:60px;}
+    section{padding:60px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-row">
+    <div class="brand">
+      <img src="desert-fox-logo.png" alt="Desert Fox Radio logo">
+      <div class="brand-name">DESERT FOX <span>RADIO</span></div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <nav class="main-nav" id="mainNav">
+      <a href="#episodes">Episodes</a>
+      <a href="#about">About</a>
+      <a href="#connect">Connect</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="listen">
+  <svg class="sunburst" viewBox="0 0 900 900" aria-hidden="true">
+    <circle cx="450" cy="450" r="420" fill="none" stroke="#c1502e" stroke-width="1.5" opacity="0.35"/>
+    <circle cx="450" cy="450" r="340" fill="none" stroke="#e8a93c" stroke-width="1.5" opacity="0.35"/>
+    <circle cx="450" cy="450" r="260" fill="none" stroke="#c1502e" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="450" cy="450" r="180" fill="none" stroke="#e8a93c" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="450" cy="450" r="100" fill="#e8a93c" opacity="0.08"/>
+  </svg>
+
+  <img class="hero-badge" src="desert-fox-logo.png" alt="Desert Fox Radio">
+  <p class="tagline">Sun-warmed sounds, wide-open frequencies. Curated sets from the edge of the dunes, hosted by Sal.</p>
+
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#episodes">Browse Episodes</a>
+    <a class="btn btn-secondary" href="https://www.mixcloud.com/DesertFoxRadio/" target="_blank" rel="noopener">Follow on Mixcloud</a>
+  </div>
+
+  <svg class="horizon" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points="0,140 0,90 150,60 320,95 480,45 650,85 820,40 1000,80 1200,55 1200,140" fill="#1e1610"/>
+  </svg>
+</section>
+
+<section class="episodes" id="episodes">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Missed a show?</h2>
+      <p>New and old episodes, on demand. Every set that's aired lives here, straight from our Mixcloud archive.</p>
+    </div>
+
+    <div class="episode-list">
+      <div class="episode-card">
+        <div class="episode-meta">Bleecker Street Syndicate 2</div>
+        <div class="episode-date">Latest broadcast — Sep 5, 2026</div>
+        <iframe id="latest-episode-player" height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&autoplay=1&feed=%2FDesertFoxRadio%2Fbleecker-street-syndicate-2-_desert-fox-radio-20260905-154854%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Bleecker Street Syndicate</div>
+        <div class="episode-date">Aug 29, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fbleecker-street-syndicate-_desert-fox-radio-20260829-184318%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Neo-Psychedelic: Desert Sun King</div>
+        <div class="episode-date">Previous broadcast</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fneo-psychedelic-desert-sun-king%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Rock Classics 2</div>
+        <div class="episode-date">Aug 1, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Frock-classics-2-desertfoxradio-24bit-96khz-8_1_2026-20260801-150611%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Rock Classics 1</div>
+        <div class="episode-date">Jul 18, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Frock-classics-1-desertfoxradio-7_17_26-20260718-204012%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Treasures from the Desert: Blues, Folk &amp; Psychedelia — Guitar Fire (Ep. 6)</div>
+        <div class="episode-date">Previous broadcast</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fdesert-fox-radio-treasures-from-the-desert-blues-folk-psychedelia-guitar-fire-ep6re-re%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Use For Radio 2</div>
+        <div class="episode-date">Jul 11, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fuse-for-radio-2-desertfoxradio-7_11_26-20260711-140315%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Neo-Psychedelic: Between Bricks and Sky</div>
+        <div class="episode-date">Jun 26, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fneo-psychedelic-between-bricks-and-sky-6_26_26-desertfoxradio-20260626-184836%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Neo-Psychedelic: The Trip</div>
+        <div class="episode-date">Jun 19, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fneo-psychedelic-the-trip-6_19_26-desertfoxradio-20260619-143649%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Dust and Static (Ep. 10)</div>
+        <div class="episode-date">Previous broadcast</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fdesert-fox-rado-dust-and-static-ep10%2F" frameborder="0"></iframe>
+      </div>
+    </div>
+
+    <p class="episodes-note">Hear everything, including shows not listed here, on our <a href="https://www.mixcloud.com/DesertFoxRadio/" target="_blank" rel="noopener">full Mixcloud archive</a>.</p>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <img src="desert-fox-logo.png" alt="Desert Fox Radio badge">
+  <div>
+    <h2>Signal from the sand</h2>
+    <p>Desert Fox Radio started as a single transmitter and a crate of records on the edge of town. These days it's a full lineup of hosts, but the idea hasn't changed: play what suits the desert — patient, warm, a little dusty around the edges.</p>
+    <p>No algorithm picks the songs. A person does, every time, from a studio where the windows face west.</p>
+    <div class="about-stats">
+      <div class="stat"><b>10+</b><span>episodes and counting</span></div>
+      <div class="stat"><b>2026</b><span>on the air</span></div>
+      <div class="stat"><b>0</b><span>skip buttons</span></div>
+    </div>
+  </div>
+</section>
+
+<footer id="connect">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="desert-fox-logo.png" alt="Desert Fox Radio">
+      <span>DESERT FOX RADIO</span>
+    </div>
+    <div class="social-links">
+      <a href="https://www.mixcloud.com/DesertFoxRadio/" target="_blank" rel="noopener">Mixcloud</a>
+      <a href="#">Instagram</a>
+      <a href="#">X</a>
+      <a href="mailto:studio@desertfoxradio.fm">studio@desertfoxradio.fm</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Desert Fox Radio. All rights reserved.</span>
+    <span>Built for listening on headphones, car speakers, and kitchen radios alike.</span>
+  </div>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const mainNav = document.getElementById('mainNav');
+  navToggle.addEventListener('click', () => mainNav.classList.toggle('open'));
+  mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mainNav.classList.remove('open')));
+</script>
+
+  <script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
+  <script>
+    // Auto-replay the latest episode when it finishes playing
+    (function() {
+      var iframe = document.getElementById('latest-episode-player');
+      if (!iframe || !window.Mixcloud) return;
+      var widget = Mixcloud.PlayerWidget(iframe);
+      widget.ready.then(function() {
+        widget.events.ended.on(function() {
+          widget.play();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
