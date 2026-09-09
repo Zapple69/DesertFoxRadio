@@ -56,6 +56,7 @@
   .brand img{height:44px; width:auto;}
   .brand-name{font-family:'Big Shoulders Display'; font-weight:700; font-size:20px; color:var(--sand);}
   .brand-name span{color:var(--gold);}
+  .nav-group{display:flex; align-items:center; gap:24px;}
   nav.main-nav{display:flex; gap:30px;}
   nav.main-nav a{
     font-size:15px; font-weight:500; color:var(--sand-dim);
@@ -65,6 +66,12 @@
   nav.main-nav a:hover{color:var(--gold); border-color:var(--gold);}
   .nav-toggle{display:none; background:none; border:none; color:var(--sand); font-size:26px; cursor:pointer;}
   .header-cta{padding:9px 18px; font-size:13.5px; white-space:nowrap;}
+  button.header-cta{
+    background:none; border:1px solid rgba(232,169,60,0.4); color:var(--gold);
+    cursor:pointer; font-family:'Work Sans'; font-weight:600;
+  }
+  button.header-cta:hover{background:rgba(232,169,60,0.1);}
+  button.header-cta.active{outline:2px solid var(--gold); outline-offset:2px;}
 
   /* ---------- hero ---------- */
   .hero{
@@ -111,6 +118,24 @@
 
   /* ---------- episodes ---------- */
   .episodes{background:var(--bg-panel); padding-top:8px;}
+  .now-playing-block{
+    background:var(--bg-panel-2); border:1px solid rgba(232,169,60,0.3);
+    border-radius:14px; padding:22px 24px; margin-bottom:32px;
+  }
+  .now-playing-info{margin-bottom:14px;}
+  .np-label{font-size:12px; color:var(--sand-dim); margin-bottom:2px;}
+  .np-title{font-family:'Big Shoulders Display'; font-weight:700; font-size:24px; color:var(--sand);}
+  .now-playing-block iframe{width:100%; border-radius:8px; display:block; margin-bottom:16px;}
+  .player-mode-buttons{display:flex; gap:14px; flex-wrap:wrap;}
+  .player-mode-buttons .btn{
+    background:none; border:1px solid rgba(232,169,60,0.4); color:var(--gold);
+    cursor:pointer; font-family:'Work Sans';
+  }
+  .player-mode-buttons .btn.btn-primary{background:var(--rust); color:var(--sand); border-color:var(--rust);}
+  .player-mode-buttons .btn.btn-primary:hover{background:var(--rust-dark);}
+  .player-mode-buttons .btn.btn-secondary:hover{background:rgba(232,169,60,0.1);}
+  .player-mode-buttons .btn.active{outline:2px solid var(--gold); outline-offset:2px;}
+  .player-status{margin-top:12px; font-size:13px; color:var(--sand-dim); min-height:16px;}
   .episode-list{
     display:flex; flex-direction:column; gap:22px;
   }
@@ -195,12 +220,15 @@
       <div class="brand-name">DESERT FOX <span>RADIO</span></div>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
-    <nav class="main-nav" id="mainNav">
-      <a href="#episodes">Episodes</a>
-      <a href="#about">About</a>
-      <a href="#connect">Connect</a>
-    </nav>
-    <a class="btn btn-primary header-cta" href="https://www.mixcloud.com/DesertFoxRadio/" target="_blank" rel="noopener">Follow on Mixcloud</a>
+    <div class="nav-group">
+      <nav class="main-nav" id="mainNav">
+        <a href="#episodes">Episodes</a>
+        <a href="#about">About</a>
+        <a href="#connect">Connect</a>
+      </nav>
+      <a class="btn btn-primary header-cta" href="https://www.mixcloud.com/DesertFoxRadio/" target="_blank" rel="noopener">Follow on Mixcloud</a>
+      <button class="btn btn-secondary header-cta" id="playAllBtn">&#128257; Play All (Auto-Advance)</button>
+    </div>
   </div>
 </header>
 
@@ -227,12 +255,17 @@
       <p>New and old episodes, on demand. Every set that's aired lives here, straight from our Mixcloud archive.</p>
     </div>
 
-    <div class="episode-list">
-      <div class="episode-card">
-        <div class="episode-meta">Bleecker Street Syndicate 2</div>
-        <div class="episode-date">Latest broadcast — Sep 5, 2026</div>
-        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&autoplay=1&feed=%2FDesertFoxRadio%2Fbleecker-street-syndicate-2-_desert-fox-radio-20260905-154854%2F" frameborder="0" allow="autoplay"></iframe>
+    <div class="now-playing-block">
+      <div class="now-playing-info">
+        <div class="np-label">Now playing</div>
+        <div class="np-title" id="npTitle">Bleecker Street Syndicate 2</div>
       </div>
+      <iframe id="mainPlayerFrame" height="120" allow="autoplay" frameborder="0"
+        src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fbleecker-street-syndicate-2-_desert-fox-radio-20260905-154854%2F"></iframe>
+      <div class="player-status" id="playerStatus"></div>
+    </div>
+
+    <div class="episode-list">
       <div class="episode-card">
         <div class="episode-meta">Bleecker Street Syndicate</div>
         <div class="episode-date">Aug 29, 2026</div>
@@ -317,11 +350,69 @@
   </div>
 </footer>
 
+<script src="https://widget.mixcloud.com/media/js/widgetApi.js"></script>
 <script>
   const navToggle = document.getElementById('navToggle');
   const mainNav = document.getElementById('mainNav');
   navToggle.addEventListener('click', () => mainNav.classList.toggle('open'));
   mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mainNav.classList.remove('open')));
+
+  // ---- Playlist player (Latest / Auto-Advance) ----
+  const PLAYLIST = [
+    {feed: '/DesertFoxRadio/bleecker-street-syndicate-2-_desert-fox-radio-20260905-154854/', title: 'Bleecker Street Syndicate 2'},
+    {feed: '/DesertFoxRadio/bleecker-street-syndicate-_desert-fox-radio-20260829-184318/', title: 'Bleecker Street Syndicate'},
+    {feed: '/DesertFoxRadio/neo-psychedelic-desert-sun-king/', title: 'Neo-Psychedelic: Desert Sun King'},
+    {feed: '/DesertFoxRadio/rock-classics-2-desertfoxradio-24bit-96khz-8_1_2026-20260801-150611/', title: 'Rock Classics 2'},
+    {feed: '/DesertFoxRadio/rock-classics-1-desertfoxradio-7_17_26-20260718-204012/', title: 'Rock Classics 1'},
+    {feed: '/DesertFoxRadio/desert-fox-radio-treasures-from-the-desert-blues-folk-psychedelia-guitar-fire-ep6re-re/', title: 'Treasures from the Desert: Guitar Fire (Ep. 6)'},
+    {feed: '/DesertFoxRadio/use-for-radio-2-desertfoxradio-7_11_26-20260711-140315/', title: 'Use For Radio 2'},
+    {feed: '/DesertFoxRadio/neo-psychedelic-between-bricks-and-sky-6_26_26-desertfoxradio-20260626-184836/', title: 'Neo-Psychedelic: Between Bricks and Sky'},
+    {feed: '/DesertFoxRadio/neo-psychedelic-the-trip-6_19_26-desertfoxradio-20260619-143649/', title: 'Neo-Psychedelic: The Trip'},
+    {feed: '/DesertFoxRadio/desert-fox-rado-dust-and-static-ep10/', title: 'Dust and Static (Ep. 10)'}
+  ];
+
+  const mainFrame = document.getElementById('mainPlayerFrame');
+  const npTitle = document.getElementById('npTitle');
+  const playerStatus = document.getElementById('playerStatus');
+  const playAllBtn = document.getElementById('playAllBtn');
+
+  let widget = Mixcloud.PlayerWidget(mainFrame);
+  let currentIndex = 0;
+  let autoAdvance = false;
+  let widgetReady = false;
+
+  widget.ready.then(() => {
+    widgetReady = true;
+    widget.events.ended.on(() => {
+      if (autoAdvance) {
+        currentIndex = (currentIndex + 1) % PLAYLIST.length;
+        loadTrack(currentIndex, true);
+      }
+    });
+  });
+
+  function loadTrack(index, autoplay) {
+    const track = PLAYLIST[index];
+    npTitle.textContent = track.title;
+    widget.load(track.feed, autoplay);
+  }
+
+  function setActiveButton(btn) {
+    playAllBtn.classList.remove('active');
+    if (btn) btn.classList.add('active');
+  }
+
+  playAllBtn.addEventListener('click', () => {
+    autoAdvance = true;
+    currentIndex = 0;
+    setActiveButton(playAllBtn);
+    playerStatus.textContent = 'Auto-advancing through all episodes, oldest catches up after the last.';
+    if (widgetReady) {
+      loadTrack(0, true);
+    } else {
+      widget.ready.then(() => loadTrack(0, true));
+    }
+  });
 </script>
 
 </body>
