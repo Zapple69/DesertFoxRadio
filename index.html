@@ -258,14 +258,24 @@
     <div class="now-playing-block">
       <div class="now-playing-info">
         <div class="np-label">Now playing</div>
-        <div class="np-title" id="npTitle">Bleecker Street Syndicate 2</div>
+        <div class="np-title" id="npTitle">Blues: Helping the Sun King</div>
       </div>
       <iframe id="mainPlayerFrame" height="120" allow="autoplay" frameborder="0"
-        src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fbleecker-street-syndicate-2-_desert-fox-radio-20260905-154854%2F"></iframe>
+        src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fblues-helping-the-sun-king-_desert-fox-radio-20260916-215122%2F"></iframe>
       <div class="player-status" id="playerStatus"></div>
     </div>
 
     <div class="episode-list">
+      <div class="episode-card">
+        <div class="episode-meta">Blues: Helping the Sun King</div>
+        <div class="episode-date">Latest broadcast — Sep 16, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fblues-helping-the-sun-king-_desert-fox-radio-20260916-215122%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">Bleecker Street Syndicate 2</div>
+        <div class="episode-date">Sep 5, 2026</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fbleecker-street-syndicate-2-_desert-fox-radio-20260905-154854%2F" frameborder="0"></iframe>
+      </div>
       <div class="episode-card">
         <div class="episode-meta">Bleecker Street Syndicate</div>
         <div class="episode-date">Aug 29, 2026</div>
@@ -359,6 +369,7 @@
 
   // ---- Playlist player (Latest / Auto-Advance) ----
   const PLAYLIST = [
+    {feed: '/DesertFoxRadio/blues-helping-the-sun-king-_desert-fox-radio-20260916-215122/', title: 'Blues: Helping the Sun King'},
     {feed: '/DesertFoxRadio/bleecker-street-syndicate-2-_desert-fox-radio-20260905-154854/', title: 'Bleecker Street Syndicate 2'},
     {feed: '/DesertFoxRadio/bleecker-street-syndicate-_desert-fox-radio-20260829-184318/', title: 'Bleecker Street Syndicate'},
     {feed: '/DesertFoxRadio/neo-psychedelic-desert-sun-king/', title: 'Neo-Psychedelic: Desert Sun King'},
@@ -394,7 +405,14 @@
   function loadTrack(index, autoplay) {
     const track = PLAYLIST[index];
     npTitle.textContent = track.title;
-    widget.load(track.feed, autoplay);
+    const loadPromise = widget.load(track.feed, autoplay);
+    if (autoplay && loadPromise && typeof loadPromise.then === 'function') {
+      loadPromise.then(() => {
+        widget.play();
+      }).catch(() => {
+        playerStatus.textContent = 'Tap the player if it doesn\'t resume automatically.';
+      });
+    }
   }
 
   function setActiveButton(btn) {
