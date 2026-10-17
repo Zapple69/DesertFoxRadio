@@ -258,17 +258,22 @@
     <div class="now-playing-block">
       <div class="now-playing-info">
         <div class="np-label">Now playing</div>
-        <div class="np-title" id="npTitle">View From Above</div>
+        <div class="np-title" id="npTitle">Blue Skys in the Desert</div>
       </div>
       <iframe id="mainPlayerFrame" height="120" allow="autoplay" frameborder="0"
-        src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fview-from-above%2F"></iframe>
+        src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fblue-skys-in-the-desert-desertfoxradio%2F"></iframe>
       <div class="player-status" id="playerStatus"></div>
     </div>
 
     <div class="episode-list">
       <div class="episode-card">
-        <div class="episode-meta">View From Above</div>
+        <div class="episode-meta">Blue Skys in the Desert</div>
         <div class="episode-date">Latest broadcast</div>
+        <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fblue-skys-in-the-desert-desertfoxradio%2F" frameborder="0"></iframe>
+      </div>
+      <div class="episode-card">
+        <div class="episode-meta">View From Above</div>
+        <div class="episode-date">Previous broadcast</div>
         <iframe height="120" src="https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=%2FDesertFoxRadio%2Fview-from-above%2F" frameborder="0"></iframe>
       </div>
       <div class="episode-card">
@@ -384,6 +389,7 @@
 
   // ---- Playlist player (Latest / Auto-Advance) ----
   const PLAYLIST = [
+    {feed: '/DesertFoxRadio/blue-skys-in-the-desert-desertfoxradio/', title: 'Blue Skys in the Desert'},
     {feed: '/DesertFoxRadio/view-from-above/', title: 'View From Above'},
     {feed: '/DesertFoxRadio/looking-for-the-sun-king-2/', title: 'Looking for the Sun King 2'},
     {feed: '/DesertFoxRadio/looking-for-the-sun-king/', title: 'Looking for the Sun King'},
